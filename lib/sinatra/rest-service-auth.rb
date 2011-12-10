@@ -19,7 +19,7 @@ module Sinatra
   	end
   
   	def get_key
-  		@key ||= ((config = YAML.load_file(File.expand_path(File.join(File.dirname(__FILE__), 'config.yml')))) && config['key'])
+  		@key ||= ((config = YAML.load_file(File.expand_path(File.join(settings.root, 'config.yml')))) && config['key'])
   	end
   
   	def sha256(str)
