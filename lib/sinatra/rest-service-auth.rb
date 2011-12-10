@@ -5,7 +5,7 @@ require 'sinatra/base'
 module Sinatra
 	module RESTServiceAuth
   	def base_url
-  		request.url.gsub(/\&sig\=.*/, '')
+  		request.url.gsub(/\&?sig\=\w*/, '')
   	end
   
   	def authorized?
