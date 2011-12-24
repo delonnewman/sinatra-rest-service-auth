@@ -6,14 +6,9 @@ require 'yaml'
 
 num_keys = ARGV.first.to_i || 1
 
-g = Sinatra::RESTServiceAuth::KeyGenerator.new(1)
-
-num_keys.times_with_progress('Generating Keys') do
-	g.generate_keys
+keys = []
+num_keys.times_with_progress("Generating #{num_keys} Keys") do
+	keys.push Sinatra::RESTServiceAuth::KeyGenerator.new(1).generate_keys.first.to_s
 end
 
-keys = { :keys => g.keys.map { |k| k.to_s } }.to_yaml
-
-File.open('config.yml', 'w') do |f|
-	f.write keys
-end
+puts keys.join("\n")

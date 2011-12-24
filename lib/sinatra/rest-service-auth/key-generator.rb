@@ -13,11 +13,11 @@ module Sinatra
 			end
 
 			def generate_keys
-				@num_keys.times do |i|
-					@keys.push BCrypt::Password.create(srand)
+				@keys = (1..@num_keys).map do |i|
+					BCrypt::Password.create(srand)
 				end
 
-				self
+				@keys
 			end
 		end
 	end
