@@ -1,6 +1,8 @@
 source "http://plcoapp"
 
 gem 'sinatra'
+gem 'bcrypt-ruby', :require => 'bcrypt'
+gem 'progress'
 
 group :development do
   gem "bundler", "~> 1.0.0"

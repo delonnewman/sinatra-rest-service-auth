@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+$:.unshift File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'progress'
+require 'sinatra/rest-service-auth/key-generator'
+require 'yaml'
+
+num_keys = ARGV.first.to_i || 1
+
+g = Sinatra::RESTServiceAuth::KeyGenerator.new(1)
+
+num_keys.times_with_progress('Generating Keys') do
+	g.generate_keys
+end
+
+keys = { :keys => g.keys.map { |k| k.to_s } }.to_yaml
+
+File.open('config.yml', 'w') do |f|
+	f.write keys
+end
