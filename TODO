@@ -1,0 +1,2 @@
+- Add web interface for generating keys
+- Add support for ActiveRecord, DataMapper, Sequel Models for generating keys
