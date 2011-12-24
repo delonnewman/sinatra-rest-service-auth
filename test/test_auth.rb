@@ -8,16 +8,12 @@ require 'digest'
 ENV['RACK_ENV'] = 'test'
 
 class TestApp < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
   helpers do
     def match_key(key)
       '34' == key
     end
-  end
-
-  before do
-    block unless authorized?
   end
 
   get '/' do
@@ -46,7 +42,6 @@ class TestSinatraRestServiceAuth < Test::Unit::TestCase
   end
 
   def test_auth_for_long_query
-    # fails because cannot guarentee param order
     params = [%w{key 34}, %w{name John}, %w{age 32}, %w{city Honolulu}]
     q   = "?#{params.sort { |a, b| a.first <=> b.first }.map { |x| "#{x.first}=#{x.last}" }.join('&')}"
     url = "http://example.org/#{q}"

@@ -8,13 +8,9 @@ require 'digest'
 ENV['RACK_ENV'] = 'test'
 
 class App1 < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
   set :keys, %w{34 54}
-
-  before do
-    block! unless authorized?
-  end
 
   get '/' do
     'ok'
@@ -50,13 +46,9 @@ class TestModel
 end
 
 class App2 < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
   set :keys, TestModel
-
-  before do
-    block! unless authorized?
-  end
 
   get '/' do
     'ok'
@@ -88,13 +80,9 @@ class TestKeyFromModel < Test::Unit::TestCase
 end
 
 class App3 < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
   set :keys, lambda { %w{34 54} }
-
-  before do
-    block! unless authorized?
-  end
 
   get '/' do
     'ok'
@@ -118,15 +106,9 @@ class TestKeyFromLambda < Test::Unit::TestCase
 end
 
 class App4 < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
-	match_key do |k, s|
-		true
-	end
-
-  before do
-    block! unless authorized?
-  end
+  authorize_when { |k, s| k == '34' }
 
   get '/' do
     'ok'
@@ -145,21 +127,17 @@ class TestMatchKey < Test::Unit::TestCase
     url = "http://example.org/#{q}"
     sig = Digest::SHA2.new(256).hexdigest(url)
     get "/#{q}&sig=#{sig}"
-		File.open('errors.html', 'w') do |f|
-			f.write last_response.body
-		end
+    File.open('errors.html', 'w') do |f|
+      f.write last_response.body
+    end
     assert last_response.ok?, "request should succeed"
   end
 end
 
 class App5 < Sinatra::Base
-  helpers Sinatra::RESTServiceAuth
+  register Sinatra::RESTServiceAuth
 
-	set :keys, 'config-single.yml'
-
-  before do
-    block! unless authorized?
-  end
+  set :keys, 'config-single.yml'
 
   get '/' do
     'ok'
@@ -173,9 +151,9 @@ class TestKeyFromFileWithSingleKey < Test::Unit::TestCase
     App5.new
   end
 
-	def test_file_exists
-		assert File.exists?(File.expand_path(File.join(settings.root, 'config-single.yml')))
-	end
+  def test_file_exists
+    assert File.exists?(File.expand_path(File.join(settings.root, 'config-single.yml')))
+  end
 
   def test_auth
     q   = '?key=34'
