@@ -56,9 +56,6 @@ module Sinatra
       #
       #  By default it will look for a YAML file at app_root/config.yml
       #
-      # `set :match_key, lambda {}` can be used instead of `set :keys` in this
-      # case the lambda or Proc must return a boolean value.
-      # 
       # Using this method you can implement your own key checking.
       def match_key(key)
         if @key then @key == key
