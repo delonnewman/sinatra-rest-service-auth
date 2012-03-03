@@ -1,4 +1,4 @@
-source "http://plcoapp"
+source :rubygems
 
 gem 'sinatra'
 gem 'bcrypt-ruby', :require => 'bcrypt'
