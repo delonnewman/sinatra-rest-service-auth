@@ -2,8 +2,8 @@
 require 'yaml'
 
 unless ARGV.first
-	puts "Usage: #$0 FILE"
-	exit
+  puts "Usage: #$0 FILE"
+  exit
 end
 
 file   = ARGV.first
@@ -11,17 +11,17 @@ keys   = $stdin.read.split("\n")
 config = nil
 
 if File.exists? file
-	config = YAML.load_file file
+  config = YAML.load_file file
 
-	if config['keys']
-		config['keys'].push(keys).flatten!
-	else
-		config['keys'] = keys
-	end
+  if config['keys']
+    config['keys'].push(keys).flatten!
+  else
+    config['keys'] = keys
+  end
 else
-	config = { 'keys' => keys }
+  config = { 'keys' => keys }
 end
 
 File.open(file, 'w') do |f|
-	f.write config.to_yaml
+  f.write config.to_yaml
 end

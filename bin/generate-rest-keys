@@ -8,7 +8,7 @@ num_keys = ARGV.first.to_i || 1
 
 keys = []
 num_keys.times_with_progress("Generating #{num_keys} Keys") do
-	keys.push Sinatra::RESTServiceAuth::KeyGenerator.new(1).generate_keys.first.to_s
+  keys.push Sinatra::RESTServiceAuth::KeyGenerator.new(1).generate_keys.first.to_s
 end
 
 puts keys.join("\n")
